@@ -13,44 +13,44 @@ type UrlError struct {
 
 type UrlIdDTO struct {
 	Data struct {
-		Type string `json:"type"`
-		ID   string `json:"id"`
-	} `json:"data"`
+		Type string
+		ID   string
+	}
 }
 
 type RequestUrlDTO struct {
-	URL string
+	ID string
 }
 
 // VirusTotalReportDTO represent the data analized
 type VirusTotalReportDTO struct {
 	Data struct {
 		Attributes struct {
-			Status string `json:"status"` // "queued", "in_progress", "completed"
+			Status string // "queued", "in_progress", "completed"
 
 			// Statistics
 			Stats struct {
-				Malicious  int `json:"malicious"`
-				Suspicious int `json:"suspicious"`
-				Harmless   int `json:"harmless"`
-				Undetected int `json:"undetected"`
-				Timeout    int `json:"timeout"`
-			} `json:"stats"`
+				Malicious  int
+				Suspicious int
+				Harmless   int
+				Undetected int
+				Timeout    int
+			}
 
 			// Timestamp (Unix Format)
-			Date    int64                   `json:"date"`
-			Results map[string]EngineResult `json:"results"`
-		} `json:"attributes"`
+			Date    int64
+			Results map[string]EngineResult
+		}
 
-		ID   string `json:"id"`
-		Type string `json:"type"`
-	} `json:"data"`
+		ID   string
+		Type string
+	}
 }
 
 // EngineResult antivirus/engine details
 type EngineResult struct {
-	Method     string `json:"method"`
-	EngineName string `json:"engine_name"`
-	Category   string `json:"category"` // "harmless", "malicious", etc.
-	Result     string `json:"result"`   // Text description
+	Method     string
+	EngineName string
+	Category   string // "harmless", "malicious", etc.
+	Result     string // Text description
 }

@@ -1,6 +1,7 @@
 package external
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -35,9 +36,11 @@ func (c *ReqFactoryImpl) BuildTotalVirusPostReq(urlRequest string) (*http.Reques
 
 }
 
-func (c *ReqFactoryImpl) BuildTotalVirusGetReq(urlRequest string) (*http.Request, error) {
+func (c *ReqFactoryImpl) BuildTotalVirusGetReq(id string) (*http.Request, error) {
 
-	req, err := http.NewRequest("GET", c.Config.ANALIZE_URL_BASE_URL, nil)
+	fullUrl := fmt.Sprintf("%s/%s", c.Config.ANALIZE_URL_BASE_URL, id)
+	fmt.Println(fullUrl)
+	req, err := http.NewRequest("GET", fullUrl, nil)
 	if err != nil {
 		return nil, err
 	}

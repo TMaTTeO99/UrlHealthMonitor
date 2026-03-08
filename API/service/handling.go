@@ -69,20 +69,14 @@ func (s *UrlService) SearchHandling(w http.ResponseWriter, r *http.Request) {
 // Method to handle the analize API request
 func (s *UrlService) AnalizeHandling(w http.ResponseWriter, r *http.Request) {
 
-	// Check the body presences
-	bodyReader, err := r.GetBody()
-	if err != nil {
-		http.Error(w, "Err: body don't found", http.StatusBadRequest)
-	}
-
 	// Deserialize the body object
 	var request models.RequestUrlDTO
-	json.NewDecoder(bodyReader).Decode(&request)
+	json.NewDecoder(r.Body).Decode(&request)
 
 	var reqFactory external.ReqFactoryInterface = &external.ReqFactoryImpl{
 		Config: s.Config,
 	}
-	req, err := reqFactory.BuildTotalVirusGetReq(s.Config.ANALIZE_URL_BASE_URL)
+	req, err := reqFactory.BuildTotalVirusGetReq(request.ID)
 	if err != nil {
 		http.Error(w, "Error in build request", http.StatusInternalServerError)
 	}
@@ -90,6 +84,7 @@ func (s *UrlService) AnalizeHandling(w http.ResponseWriter, r *http.Request) {
 	// Do the request
 	resp, err := s.Client.Do(req)
 	if err != nil {
+		fmt.Println(err)
 		http.Error(w, "Error in external service http request", http.StatusBadGateway)
 		return
 	}
