@@ -29,5 +29,5 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            tmatteo99/UrlHealthMonitor:latest
-            tmatteo99/UrlHealthMonitor:${{ github.sha }}
+            tmatteo99/url-health-monitor:latest
+            tmatteo99/url-health-monitor:${{ github.sha }}
