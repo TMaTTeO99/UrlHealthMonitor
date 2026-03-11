@@ -19,7 +19,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
 # use the light base image version
-FROM alpin:latest
+FROM alpine:latest
 
 # chose the work directory to run the code
 WORKDIR /root/
