@@ -2,16 +2,15 @@ package config
 
 import (
 	"os"
-
-	"github.com/joho/godotenv"
+	//"github.com/joho/godotenv"
 )
 
 func LoadConfig() (*ConfigData, error) {
 
-	err := godotenv.Load()
-	if err != nil {
-		return nil, err
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	return &ConfigData{
 		API_KEY:              os.Getenv("VIRUSTOTAL_API_KEY"),
