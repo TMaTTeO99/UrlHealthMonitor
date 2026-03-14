@@ -1,4 +1,4 @@
-name: Back-End CI
+name: Back-End CI/CD
 
 on:
   push:
@@ -32,3 +32,18 @@ jobs:
           tags: |
             tmatteo99/url-health-monitor:latest
             tmatteo99/url-health-monitor:${{ github.sha }}
+      - name: Update Infrastructure Repo
+        env:
+          INFRA_TOKEN: ${{ secrets.INFRA_REPO_TOKEN }}
+        run: |
+          git config --global user.email "matteo.torchia64@gmail.com"
+          git config --global user.name "Github Actions"
+
+          git clone https://x-access-token:${INFRA_TOKEN}@github.com/TMaTTeO99/health-monitor-infra.git
+          cd health-monitor-infra
+
+          sed -i "s|image: tmatteo99/url-health-monitor:.*|image: tmatteo99/url-health-monitor:${{ github.sha }}|g" app-deployment.yaml
+
+          git add .
+          git commit -m "chore: update backend image to ${{ github.sha }}"
+          git push
