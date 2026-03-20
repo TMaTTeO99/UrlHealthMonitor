@@ -30,7 +30,7 @@ func main() {
 	connection.CreateUrlTable(conn)
 
 	// Start web server
-	controllers.StartWebServer(config)
+	controllers.StartWebServer(config, conn)
 
 	// Close DB connection at the program's end
 	defer conn.Close(context.Background())

@@ -50,11 +50,9 @@ func UrlsTableExists(conn *pgx.Conn) bool {
 	return exists
 }
 
-func InsertUrl(conn *pgx.Conn, url string) {
+func InsertUrl(conn *pgx.Conn, url string) error {
 
 	_, err := conn.Exec(context.Background(), ADD_URL_QUERY, url)
-	if err != nil {
-		log.Fatal("ERROR: ", err)
-	}
-
+	return err
+	
 }
