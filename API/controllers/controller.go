@@ -27,7 +27,7 @@ func StartWebServer(config *config.ConfigData, dbConn *pgx.Conn) {
 	}
 	mux.HandleFunc("GET /url/verified-url/{urlValue}", urlService.SearchHandling)
 	mux.HandleFunc("POST /url/verified-url/:findInfo", urlService.AnalizeHandling)
-	mux.HandleFunc("GET /url/verified-url/{userId}", urlService.RetrieveUserUrls)
+	mux.HandleFunc("GET /url/verified-url/urls/{userId}", urlService.RetrieveUserUrls)
 	handler := middleware.ApplyCorse(mux)
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", os.Getenv("SERVER_HOST"), os.Getenv("SERVER_PORT")), handler))
