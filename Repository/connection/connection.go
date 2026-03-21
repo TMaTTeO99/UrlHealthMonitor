@@ -53,6 +53,7 @@ func UrlsTableExists(conn *pgx.Conn) bool {
 func InsertUrl(conn *pgx.Conn, url string) error {
 
 	_, err := conn.Exec(context.Background(), ADD_URL_QUERY, url)
+	fmt.Print(err)
 	return err
-	
+
 }
