@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/TMaTTeO99/UrlHealthMonitor/API/external"
@@ -110,6 +111,29 @@ func (s *UrlService) AnalizeHandling(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(extResponse)
+
+}
+
+func (s *UrlService) RetrieveUserUrls(w http.ResponseWriter, r *http.Request) {
+
+	userId, err := strconv.Atoi(r.PathValue("userId"))
+
+	if err != nil {
+		http.Error(w, "Error during request reading", http.StatusBadRequest)
+		return
+	}
+
+	urls, err := connection.GetAllUlr(s.DBConn, userId)
+
+	if err != nil {
+		http.Error(w, "Error during data retrieving", http.StatusInternalServerError)
+		return
+	}
+	urlsDTO := &models.GetUrlsByIdResponse{
+		Urls: urls,
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(urlsDTO)
 
 }
 

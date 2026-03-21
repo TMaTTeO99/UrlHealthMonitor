@@ -22,6 +22,10 @@ type RequestUrlDTO struct {
 	ID string
 }
 
+type GetUrlsByIdResponse struct {
+	Urls []string
+}
+
 // VirusTotalReportDTO represent the data analized
 type VirusTotalReportDTO struct {
 	Data struct {

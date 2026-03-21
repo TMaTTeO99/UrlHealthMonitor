@@ -18,8 +18,9 @@ import (
 )
 
 const EXISTS_URLS_TABLE_QUERY = "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = $1)"
-const CREATE_URLS_TABLE_QUERY = "CREATE TABLE urls (id Integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY, url VARCHAR(255))"
-const ADD_URL_QUERY = "INSERT INTO urls (url) VALUES ($1)"
+const CREATE_URLS_TABLE_QUERY = "CREATE TABLE urls (id Integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY, url VARCHAR(255), user_id INTEGER)"
+const ADD_URL_QUERY = "INSERT INTO urls (url, user_id) VALUES ($1, $2)"
+const GET_URLS_BY_USER_ID = "SELECT * FROM urls WHERE urls.user_id = $1"
 
 func Connect(config *config.ConfigData) (*pgx.Conn, error) {
 
@@ -53,7 +54,28 @@ func UrlsTableExists(conn *pgx.Conn) bool {
 func InsertUrl(conn *pgx.Conn, url string) error {
 
 	_, err := conn.Exec(context.Background(), ADD_URL_QUERY, url)
-	fmt.Print(err)
 	return err
+
+}
+
+func GetAllUlr(conn *pgx.Conn, id int) ([]string, error) {
+
+	row, err := conn.Query(context.Background(), GET_URLS_BY_USER_ID, id)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	defer row.Close()
+
+	var urls []string
+	for row.Next() {
+		var url string
+		if err := row.Scan(&url); err != nil {
+			urls = append(urls, url)
+		}
+	}
+
+	return urls, nil
 
 }
