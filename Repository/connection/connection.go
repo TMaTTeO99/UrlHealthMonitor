@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/TMaTTeO99/UrlHealthMonitor/API/models"
 	"github.com/TMaTTeO99/UrlHealthMonitor/config"
 	"github.com/jackc/pgx/v5"
 )
@@ -58,7 +59,7 @@ func InsertUrl(conn *pgx.Conn, url string) error {
 
 }
 
-func GetAllUlr(conn *pgx.Conn, id int) ([]string, error) {
+func GetAllUlr(conn *pgx.Conn, id int) ([]models.UrlDataDTO, error) {
 
 	row, err := conn.Query(context.Background(), GET_URLS_BY_USER_ID, id)
 	if err != nil {
@@ -68,11 +69,21 @@ func GetAllUlr(conn *pgx.Conn, id int) ([]string, error) {
 
 	defer row.Close()
 
-	var urls []string
+	var urls []models.UrlDataDTO
 	for row.Next() {
+
 		var url string
-		if err := row.Scan(&url); err != nil {
-			urls = append(urls, url)
+		var userId, id int
+
+		if err := row.Scan(&id, &url, &userId); err != nil {
+			urls = append(urls, models.UrlDataDTO{
+				Id:          id,
+				UserId:      userId,
+				Title:       "",
+				Url:         url,
+				Description: "",
+				Image:       "",
+			})
 		}
 	}
 

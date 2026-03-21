@@ -130,7 +130,7 @@ func (s *UrlService) RetrieveUserUrls(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	urlsDTO := &models.GetUrlsByIdResponse{
-		Urls: urls,
+		Data: urls,
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(urlsDTO)
